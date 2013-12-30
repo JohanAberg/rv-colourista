@@ -15,6 +15,33 @@ class GradeWidget(QtGui.QWidget, widget_form.Ui_Form):
         super(GradeWidget, self).__init__()
         self.setupUi(self)
 
+        self.gainMasterHorizontalSlider.valueChanged.connect(self.on_exposure_master)
+        self.gainMasterDoubleSpinBox.valueChanged.connect(self.on_exposure_master)
+
+        commands.bind("ColouristaPanel", "global", "graph-state-change", self.set_widgets, "Docs")
+
+        self.set_widgets()
+
+    def set_widgets(self, *args):
+        values = commands.getFloatProperty('#RVColor.color.exposure', 0, 4)
+        self.gainMasterDoubleSpinBox.setValue(values[0])
+        self.gainMasterHorizontalSlider.setValue(values[0])
+
+    def on_exposure_master(self, *args):
+        sender = self.sender()
+        if isinstance(sender, QtGui.QSlider):
+            val = float(self.gainMasterHorizontalSlider.value())
+            self.gainMasterDoubleSpinBox.setValue(val)
+            values = [val, val, val]
+            commands.setFloatProperty('#RVColor.color.exposure', values)
+        elif isinstance(sender, QtGui.QDoubleSpinBox):
+            val = self.gainMasterDoubleSpinBox.value()
+            self.gainMasterHorizontalSlider.setValue(val)
+            values = [val, val, val]
+            commands.setFloatProperty('#RVColor.color.exposure', values)
+        commands.redraw()
+
+
 class DockWidget(QtGui.QDockWidget):
     def __init__(self, parent=None):
         super(DockWidget, self).__init__(parent)
@@ -57,7 +84,7 @@ class PropertyMode(rvtypes.MinorMode):
                   None,
                   [
                       ("Tools",
-                       [("Colourista Panel", self.show_panel, None, None)]
+                       [("Colourista", self.show_panel, None, None)]
                       )
                   ]
         )
