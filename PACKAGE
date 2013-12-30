@@ -1,0 +1,22 @@
+package: Colourista
+author: Johan Aberg
+organization: 
+contact: abergster@gmail.com
+version: 1.0
+requires: ''
+rv: 3.12.9
+url: 
+
+modes: 
+  - file: gradewidget.py
+    menu: ''
+    shortcut: ''
+    event: ''
+    load: immediate
+
+description: |
+    <p>
+    Tools > Colourista <br>
+    A Colour Grade Panel
+    </p>
+

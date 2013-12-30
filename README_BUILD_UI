@@ -1,0 +1,2 @@
+
+pyuic4 widget_form.ui -o widget_form.py
